@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BOTTLE ADS - Welcome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    
+    <style>
+        body { font-family: 'Kanit', sans-serif; background-color: #fcfcfc; }
+        .metallic-silver {
+            background: linear-gradient(135deg, #bdc3c7 0%, #2c3e50 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .water-blue { color: #36C5D3; } /* สีจาก CAN ADS เดิมที่คุณชอบ */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+
+    <div class="text-center mb-10">
+        <div class="flex items-center justify-center space-x-1 text-4xl md:text-5xl font-black italic tracking-tighter">
+            <span class="metallic-silver">BOTT</span>
+            <svg class="w-8 h-10" viewBox="0 0 24 24" fill="none" stroke="#2c3e50" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 20V10c0-2 1-3 3-4V3h2v3c2 1 3 2 3 4v10c0 1-1 2-2 2H10c-1 0-2-1-2-2z"/>
+            </svg>
+            <span class="metallic-silver">E</span>
+            <span class="water-blue ml-2">ADS</span>
+        </div>
+        <p class="text-[10px] tracking-[0.4em] text-slate-400 uppercase mt-2 font-bold">Refined Aluminum Media</p>
+    </div>
+
+    <div id="profile-area" class="glass-card w-full max-w-sm rounded-3xl p-8 shadow-2xl shadow-blue-100 text-center hidden">
+        <img id="user-picture" src="" alt="Profile" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-white shadow-lg">
+        <h2 class="text-xl font-bold text-slate-800">สวัสดีคุณ <span id="user-name" class="water-blue">...</span></h2>
+        <p class="text-slate-500 text-sm mt-2">ยินดีต้อนรับสู่สังคมแห่งความสดชื่น</p>
+        
+        <hr class="my-6 border-slate-100">
+
+        <button onclick="redeemCoupon()" class="w-full bg-[#36C5D3] hover:bg-[#2fb2bf] text-white font-bold py-4 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-cyan-200">
+            🎁 รับส่วนลดร้านอาโกว
+        </button>
+    </div>
+
+    <div id="loading" class="text-slate-400 animate-pulse">
+        กำลังเชื่อมต่อระบบ BOTTLE ADS...
+    </div>
+
+    <script>
+        // ใส่ LIFF ID ของคุณที่ได้จากภาพ
+        const myLiffId = "2009060288-3hRX24Zu"; 
+
+        async function main() {
+            try {
+                // เริ่มต้นระบบ LIFF
+                await liff.init({ liffId: myLiffId });
+
+                if (liff.isLoggedIn()) {
+                    // ถ้า Login แล้ว ให้ไปดึงชื่อกับรูปมา
+                    const profile = await liff.getProfile();
+                    document.getElementById("user-name").innerText = profile.displayName;
+                    document.getElementById("user-picture").src = profile.pictureUrl;
+                    
+                    // สั่งให้โชว์หน้าแอป และซ่อนคำว่า Loading
+                    document.getElementById("profile-area").classList.remove("hidden");
+                    document.getElementById("loading").classList.add("hidden");
+                } else {
+                    // ถ้ายังไม่ได้ Login ให้เด้งไปหน้า Login ของ LINE
+                    liff.login();
+                }
+            } catch (error) {
+                console.error("LIFF Error:", error);
+                alert("เกิดข้อผิดพลาดในการโหลดระบบ");
+            }
+        }
+
+        function redeemCoupon() {
+            alert("ยินดีด้วย! คุณได้รับส่วนลดเรียบร้อยแล้ว แสดงหน้าจอนี้ที่หน้าร้านได้เลย");
+        }
+
+        // เริ่มทำงาน
+        main();
+    </script>
+</body>
+</html>
